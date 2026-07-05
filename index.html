@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grade 7 Music and Arts Quiz</title>
+<style>
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    background: #ffffff;
+    color: #000000;
+    margin: 0;
+    padding: 0;
+  }
+  .container {
+    max-width: 700px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 2px solid #000000;
+  }
+  h1 {
+    text-align: center;
+    font-size: 1.6em;
+    border-bottom: 2px solid #000000;
+    padding-bottom: 10px;
+    margin-top: 0;
+  }
+  .progress {
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 0.95em;
+  }
+  .question-box {
+    border: 1px solid #000000;
+    padding: 15px;
+    margin-bottom: 15px;
+    min-height: 60px;
+  }
+  .question-text {
+    font-size: 1.15em;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  .options {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .options li {
+    border: 1px solid #000000;
+    padding: 10px;
+    margin-bottom: 8px;
+    cursor: pointer;
+  }
+  .options li:hover {
+    background: #f0f0f0;
+  }
+  .options li.selected {
+    background: #000000;
+    color: #ffffff;
+  }
+  .nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+    gap: 10px;
+  }
+  button {
+    font-family: inherit;
+    background: #ffffff;
+    color: #000000;
+    border: 2px solid #000000;
+    padding: 10px 18px;
+    cursor: pointer;
+    font-size: 1em;
+  }
+  button:hover:not(:disabled) {
+    background: #000000;
+    color: #ffffff;
+  }
+  button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  .center-btn {
+    display: block;
+    margin: 20px auto 0 auto;
+  }
+  .results {
+    text-align: center;
+  }
+  .results h2 {
+    border-bottom: 2px solid #000000;
+    padding-bottom: 10px;
+  }
+  .score-line {
+    font-size: 1.3em;
+    margin: 10px 0;
+  }
+  .review-item {
+    border: 1px solid #000000;
+    padding: 10px;
+    margin-bottom: 8px;
+    text-align: left;
+  }
+  .review-item.correct {
+    border-left: 6px solid #000000;
+  }
+  .review-item.incorrect {
+    border-left: 6px solid #000000;
+    background: #eeeeee;
+  }
+  .review-item p {
+    margin: 4px 0;
+  }
+  .label-correct::before {
+    content: "✔ ";
+  }
+  .label-incorrect::before {
+    content: "✘ ";
+  }
+  .hidden {
+    display: none;
+  }
+  @media (max-width: 600px) {
+    .container {
+      margin: 10px;
+      padding: 12px;
+    }
+    h1 {
+      font-size: 1.3em;
+    }
+    .question-text {
+      font-size: 1em;
+    }
+    button {
+      padding: 8px 12px;
+      font-size: 0.9em;
+    }
+    .nav-buttons {
+      flex-wrap: wrap;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Grade 7 Music &amp; Arts Quiz</h1>
+
+  <div id="quizScreen">
+    <div class="progress" id="progressText"></div>
+    <div class="question-box">
+      <div class="question-text" id="questionText"></div>
+      <ul class="options" id="optionsList"></ul>
+    </div>
+    <div class="nav-buttons">
+      <button id="prevBtn">Previous</button>
+      <button id="nextBtn">Next</button>
+    </div>
+  </div>
+
+  <div id="resultsScreen" class="results hidden">
+    <h2>Quiz Complete</h2>
+    <div class="score-line" id="scoreLine"></div>
+    <div class="score-line" id="percentLine"></div>
+    <div id="reviewList"></div>
+    <button class="center-btn" id="restartBtn">Restart Quiz</button>
+  </div>
+</div>
+
+<script>
+// ---------- Question Bank ----------
+const questionBank = [
+  {
+    question: "How many countries make up Southeast Asia?",
+    options: ["Eleven (11)", "Nine (9)", "Thirteen (13)", "Seven (7)"],
+    correct: "Eleven (11)"
+  },
+  {
+    question: "What makes Southeast Asia significant economically?",
+    options: [
+      "It is one of the most dynamic economic regions in the world",
+      "It has no trade with other regions",
+      "It relies only on farming",
+      "It has a single shared currency"
+    ],
+    correct: "It is one of the most dynamic economic regions in the world"
+  },
+  {
+    question: "Which art form is defined as creating music using instruments without vocal accompaniment?",
+    options: ["Instrumental", "Vocal", "Theater", "Dance"],
+    correct: "Instrumental"
+  },
+  {
+    question: "Which art form uses the human voice to create music, convey emotions, or tell stories?",
+    options: ["Vocal", "Instrumental", "Weaving", "Architecture"],
+    correct: "Vocal"
+  },
+  {
+    question: "Which visual storytelling medium uses moving images and audio, combining cinematography, editing, sound design, and acting?",
+    options: ["Film", "Comics", "Weaving", "Documentation"],
+    correct: "Film"
+  },
+  {
+    question: "Which art form captures real-life events or concepts through photography, videography, and written records?",
+    options: ["Documentation", "Animation", "Theater", "Comics"],
+    correct: "Documentation"
+  },
+  {
+    question: "Which art form involves rhythmic movement of the body to express emotions or tell stories?",
+    options: ["Dance", "Weaving", "Architecture", "Comics"],
+    correct: "Dance"
+  },
+  {
+    question: "Which art form involves interlacing threads or yarns at right angles to create fabric?",
+    options: ["Weaving", "Animation", "Film", "Theater"],
+    correct: "Weaving"
+  },
+  {
+    question: "Which type of art is performed by individuals or groups using voice, body, or objects in front of a live audience?",
+    options: ["Performing Arts", "Visual Arts", "Architecture", "Documentation"],
+    correct: "Performing Arts"
+  },
+  {
+    question: "Which type of art meets the eye and evokes emotion through skill and imagination?",
+    options: ["Visual Arts", "Performing Arts", "Vocal Arts", "Instrumental Arts"],
+    correct: "Visual Arts"
+  },
+  {
+    question: "Which performing art form has actors performing live on a stage, portraying characters through acting, set design, and costumes?",
+    options: ["Theater", "Dance", "Vocal", "Comics"],
+    correct: "Theater"
+  },
+  {
+    question: "Which art form creates the illusion of motion by displaying still images in rapid succession?",
+    options: ["Animation", "Architecture", "Weaving", "Vocal"],
+    correct: "Animation"
+  },
+  {
+    question: "Which art form involves designing and creating physical spaces that combine functionality and aesthetics?",
+    options: ["Architecture", "Comics", "Film", "Dance"],
+    correct: "Architecture"
+  },
+  {
+    question: "Which visual storytelling medium uses illustrations and text, often with panels, to convey narratives and humor?",
+    options: ["Comics", "Documentation", "Weaving", "Theater"],
+    correct: "Comics"
+  },
+  {
+    question: "In musical elements, what does 'Timbre' refer to?",
+    options: ["Sound quality", "High or low sounds", "Fast or slow", "Loud or quiet"],
+    correct: "Sound quality"
+  },
+  {
+    question: "In musical elements, what does 'Pitch' refer to?",
+    options: ["High or low sounds", "Sound quality", "How many sounds", "The musical plan"],
+    correct: "High or low sounds"
+  },
+  {
+    question: "In musical elements, what does 'Texture' refer to?",
+    options: ["How many sounds", "Long or short", "Loud or quiet", "Sound quality"],
+    correct: "How many sounds"
+  },
+  {
+    question: "In musical elements, what does 'Tempo' refer to?",
+    options: ["Fast or slow", "Loud or quiet", "Long or short", "High or low sounds"],
+    correct: "Fast or slow"
+  },
+  {
+    question: "In musical elements, what does 'Duration' refer to?",
+    options: ["Long or short", "Fast or slow", "The musical plan", "Sound quality"],
+    correct: "Long or short"
+  },
+  {
+    question: "In musical elements, what does 'Structure' refer to?",
+    options: ["The musical plan", "Loud or quiet", "High or low sounds", "How many sounds"],
+    correct: "The musical plan"
+  },
+  {
+    question: "In musical elements, what does 'Dynamics' refer to?",
+    options: ["Loud or quiet", "Fast or slow", "Sound quality", "Long or short"],
+    correct: "Loud or quiet"
+  },
+  {
+    question: "Stomping your feet following the beat of a song demonstrates which musical element?",
+    options: ["Beat", "Rhythm", "Melody", "Harmony"],
+    correct: "Beat"
+  },
+  {
+    question: "Clapping the syllables of the lyrics demonstrates which musical element?",
+    options: ["Rhythm", "Beat", "Tempo", "Dynamics"],
+    correct: "Rhythm"
+  },
+  {
+    question: "Humming the tune and using hand gestures to show ascending, descending, or repeated movement demonstrates which element?",
+    options: ["Melody", "Beat", "Texture", "Dynamics"],
+    correct: "Melody"
+  },
+  {
+    question: "The independent melodies you can hear at the same time is called:",
+    options: ["Harmony and Texture", "Beat", "Rhythm", "Tempo"],
+    correct: "Harmony and Texture"
+  },
+  {
+    question: "The song 'Mini Miss U' originated from which country?",
+    options: ["Philippines", "Indonesia", "Vietnam", "Thailand"],
+    correct: "Philippines"
+  },
+  {
+    question: "The song 'Da yang Gatal Gatal' originated from which country?",
+    options: ["Indonesia", "Philippines", "Vietnam", "Thailand"],
+    correct: "Indonesia"
+  },
+  {
+    question: "The song 'Ting Ting Tang Ting' originated from which country?",
+    options: ["Vietnam", "Philippines", "Indonesia", "Thailand"],
+    correct: "Vietnam"
+  },
+  {
+    question: "The song 'Mong Nan Nan' originated from which country?",
+    options: ["Thailand", "Philippines", "Indonesia", "Vietnam"],
+    correct: "Thailand"
+  },
+  {
+    question: "Which of the following is NOT one of the six Visual Arts categories discussed (Film, Animation, Architecture, Comics, Weaving, Documentation)?",
+    options: ["Dance", "Animation", "Comics", "Weaving"],
+    correct: "Dance"
+  },
+  {
+    question: "Which of the following is NOT one of the four Performing Arts categories discussed (Vocal, Instrumental, Theater, Dance)?",
+    options: ["Architecture", "Vocal", "Theater", "Dance"],
+    correct: "Architecture"
+  },
+  {
+    question: "In the Elements of Art, 'Line' is best described as:",
+    options: [
+      "The path of a point moving through space",
+      "The relative lightness and darkness of a surface",
+      "The area in which art is organized",
+      "The repetition of a design element"
+    ],
+    correct: "The path of a point moving through space"
+  },
+  {
+    question: "In the Principles of Art, 'Balance' refers to:",
+    options: [
+      "The impression of equilibrium in a work (symmetrical, asymmetrical, or radial)",
+      "The repetition of a design element",
+      "The relationship of parts to the whole",
+      "The created center of interest"
+    ],
+    correct: "The impression of equilibrium in a work (symmetrical, asymmetrical, or radial)"
+  },
+  {
+    question: "In the Principles of Art, 'Emphasis' refers to:",
+    options: [
+      "The created center of interest where the eye first lands",
+      "The suggestion of motion through repeated elements",
+      "The relationship of parts to a whole",
+      "The tactile quality of a surface"
+    ],
+    correct: "The created center of interest where the eye first lands"
+  }
+];
+
+// ---------- State ----------
+let quiz = [];      // shuffled working copy with shuffled options
+let currentIndex = 0;
+let userAnswers = []; // stores selected option string per question, or null
+
+// ---------- Utility ----------
+function shuffleArray(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function buildQuiz() {
+  const shuffledQuestions = shuffleArray(questionBank);
+  quiz = shuffledQuestions.map(q => {
+    return {
+      question: q.question,
+      options: shuffleArray(q.options),
+      correct: q.correct
+    };
+  });
+  userAnswers = new Array(quiz.length).fill(null);
+  currentIndex = 0;
+}
+
+// ---------- DOM Elements ----------
+const quizScreen = document.getElementById('quizScreen');
+const resultsScreen = document.getElementById('resultsScreen');
+const progressText = document.getElementById('progressText');
+const questionText = document.getElementById('questionText');
+const optionsList = document.getElementById('optionsList');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const scoreLine = document.getElementById('scoreLine');
+const percentLine = document.getElementById('percentLine');
+const reviewList = document.getElementById('reviewList');
+const restartBtn = document.getElementById('restartBtn');
+
+// ---------- Render ----------
+function renderQuestion() {
+  const q = quiz[currentIndex];
+  progressText.textContent = "Question " + (currentIndex + 1) + " of " + quiz.length;
+  questionText.textContent = q.question;
+  optionsList.innerHTML = "";
+
+  q.options.forEach(opt => {
+    const li = document.createElement('li');
+    li.textContent = opt;
+    if (userAnswers[currentIndex] === opt) {
+      li.classList.add('selected');
+    }
+    li.addEventListener('click', () => {
+      userAnswers[currentIndex] = opt;
+      renderQuestion();
+    });
+    optionsList.appendChild(li);
+  });
+
+  prevBtn.disabled = currentIndex === 0;
+  nextBtn.textContent = (currentIndex === quiz.length - 1) ? "Finish" : "Next";
+}
+
+function showResults() {
+  quizScreen.classList.add('hidden');
+  resultsScreen.classList.remove('hidden');
+
+  let correctCount = 0;
+  reviewList.innerHTML = "";
+
+  quiz.forEach((q, i) => {
+    const userAns = userAnswers[i];
+    const isCorrect = userAns === q.correct;
+    if (isCorrect) correctCount++;
+
+    const div = document.createElement('div');
+    div.className = 'review-item ' + (isCorrect ? 'correct' : 'incorrect');
+
+    const qP = document.createElement('p');
+    qP.innerHTML = "<strong>Q" + (i + 1) + ":</strong> " + q.question;
+    div.appendChild(qP);
+
+    const yourP = document.createElement('p');
+    yourP.className = isCorrect ? 'label-correct' : 'label-incorrect';
+    yourP.textContent = "Your answer: " + (userAns !== null ? userAns : "(no answer)");
+    div.appendChild(yourP);
+
+    if (!isCorrect) {
+      const corrP = document.createElement('p');
+      corrP.textContent = "Correct answer: " + q.correct;
+      div.appendChild(corrP);
+    }
+
+    reviewList.appendChild(div);
+  });
+
+  const percent = Math.round((correctCount / quiz.length) * 100);
+  scoreLine.textContent = "You got " + correctCount + " out of " + quiz.length + " correct.";
+  percentLine.textContent = "Score: " + percent + "%";
+}
+
+// ---------- Navigation ----------
+prevBtn.addEventListener('click', () => {
+  if (currentIndex > 0) {
+    currentIndex--;
+    renderQuestion();
+  }
+});
+
+nextBtn.addEventListener('click', () => {
+  if (currentIndex < quiz.length - 1) {
+    currentIndex++;
+    renderQuestion();
+  } else {
+    showResults();
+  }
+});
+
+restartBtn.addEventListener('click', () => {
+  resultsScreen.classList.add('hidden');
+  quizScreen.classList.remove('hidden');
+  buildQuiz();
+  renderQuestion();
+});
+
+// ---------- Init ----------
+buildQuiz();
+renderQuestion();
+</script>
+
+</body>
+</html>
