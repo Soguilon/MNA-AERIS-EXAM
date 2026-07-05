@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Grade 7 Music and Arts Quiz</title>
+<title>Grade 7 MAPEH Quiz: Music, Arts, PE & Health</title>
 <style>
   * {
     box-sizing: border-box;
@@ -23,7 +23,7 @@
   }
   h1 {
     text-align: center;
-    font-size: 1.6em;
+    font-size: 1.4em;
     border-bottom: 2px solid #000000;
     padding-bottom: 10px;
     margin-top: 0;
@@ -131,7 +131,7 @@
       padding: 12px;
     }
     h1 {
-      font-size: 1.3em;
+      font-size: 1.1em;
     }
     .question-text {
       font-size: 1em;
@@ -149,7 +149,7 @@
 <body>
 
 <div class="container">
-  <h1>Grade 7 Music &amp; Arts Quiz</h1>
+  <h1>Grade 7 MAPEH Quiz</h1>
 
   <div id="quizScreen">
     <div class="progress" id="progressText"></div>
@@ -173,8 +173,9 @@
 </div>
 
 <script>
-// ---------- Question Bank ----------
+// ---------- Question Bank (50 items total: original 34 Music & Arts + 16 PE/Health, all mixed together) ----------
 const questionBank = [
+  // ===== ORIGINAL 34 MUSIC AND ARTS QUESTIONS (UNCHANGED) =====
   {
     question: "How many countries make up Southeast Asia?",
     options: ["Eleven (11)", "Nine (9)", "Thirteen (13)", "Seven (7)"],
@@ -364,6 +365,113 @@ const questionBank = [
       "The tactile quality of a surface"
     ],
     correct: "The created center of interest where the eye first lands"
+  },
+
+  // ===== 16 ADDED PHYSICAL EDUCATION AND HEALTH QUESTIONS =====
+  {
+    question: "Mental health is mainly about:",
+    options: ["How you think, feel, and act", "How tall or short you are", "How fast you can run", "How much money you have"],
+    correct: "How you think, feel, and act"
+  },
+  {
+    question: "Being mentally healthy means being able to:",
+    options: ["Enjoy life, cope with challenges, and have good relationships", "Avoid all forms of exercise", "Never feel any emotion", "Only focus on school work"],
+    correct: "Enjoy life, cope with challenges, and have good relationships"
+  },
+  {
+    question: "Exercising regularly keeps your body strong and releases what kind of chemicals in your brain?",
+    options: ["\"Happy\" chemicals", "Sleep-inducing chemicals", "Digestive chemicals", "Stress hormones only"],
+    correct: "\"Happy\" chemicals"
+  },
+  {
+    question: "The guide suggests using journaling or art mainly to:",
+    options: ["Express what you feel", "Improve your handwriting", "Earn money", "Avoid talking to anyone"],
+    correct: "Express what you feel"
+  },
+  {
+    question: "How many hours of sleep should you aim for each night, according to the guide?",
+    options: ["8–10 hours", "1–2 hours", "3–4 hours", "12–14 hours"],
+    correct: "8–10 hours"
+  },
+  {
+    question: "Too much screen time can cause:",
+    options: ["Headaches, stress, and lack of focus", "Improved eyesight", "Better sleep", "Increased physical strength"],
+    correct: "Headaches, stress, and lack of focus"
+  },
+  {
+    question: "Physical fitness is best defined as:",
+    options: [
+      "The ability to perform daily tasks efficiently without undue fatigue",
+      "The ability to memorize facts quickly",
+      "The ability to eat large amounts of food",
+      "The ability to stay awake all night"
+    ],
+    correct: "The ability to perform daily tasks efficiently without undue fatigue"
+  },
+  {
+    question: "Which of the following is a health-related fitness component?",
+    options: ["Cardiovascular endurance", "Agility", "Reaction time", "Balance"],
+    correct: "Cardiovascular endurance"
+  },
+  {
+    question: "Which of the following is a skill-related fitness component, not a health-related one?",
+    options: ["Agility", "Flexibility", "Muscular strength", "Body composition"],
+    correct: "Agility"
+  },
+  {
+    question: "In the FITT Principle, what does the letter \"F\" stand for?",
+    options: ["Frequency", "Fitness", "Flexibility", "Fatigue"],
+    correct: "Frequency"
+  },
+  {
+    question: "Warming up before exercise is important because it:",
+    options: [
+      "Prepares the muscles and helps prevent injury",
+      "Makes the workout shorter",
+      "Replaces the need for a cool-down",
+      "Burns the most calories of the whole workout"
+    ],
+    correct: "Prepares the muscles and helps prevent injury"
+  },
+  {
+    question: "Tinikling, a Philippine folk dance, imitates the movement of:",
+    options: [
+      "A bird avoiding bamboo traps",
+      "A fish swimming in a river",
+      "A carabao plowing a field",
+      "A boat sailing on the sea"
+    ],
+    correct: "A bird avoiding bamboo traps"
+  },
+  {
+    question: "A disease that can be passed from one person to another is called:",
+    options: ["A communicable disease", "A non-communicable disease", "A genetic disease", "A congenital disease"],
+    correct: "A communicable disease"
+  },
+  {
+    question: "The Pinggang Pinoy is a Philippine food guide that shows proper:",
+    options: ["Food group proportions in a meal", "Amount of sleep needed daily", "Steps for brushing teeth", "Types of exercise equipment"],
+    correct: "Food group proportions in a meal"
+  },
+  {
+    question: "First aid is best defined as:",
+    options: [
+      "The immediate care given to an injured or sick person before professional help arrives",
+      "A permanent cure for all illnesses",
+      "A type of surgery",
+      "A prescription medicine"
+    ],
+    correct: "The immediate care given to an injured or sick person before professional help arrives"
+  },
+  {
+    question: "Body Mass Index (BMI) is used to:",
+    options: [
+      "Assess if a person's weight is healthy relative to their height",
+      "Measure a person's flexibility",
+      "Measure a person's reaction time",
+      "Measure how fast a person can run"
+    ],
+    correct: "Assess if a person's weight is healthy relative to their height"
   }
 ];
 
